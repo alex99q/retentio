@@ -1,0 +1,14 @@
+<head th:fragment="baseHead(title, links, scripts)" xmlns:th="http://www.thymeleaf.org">
+    <title th:replace="${title}">Retentio</title>
+
+    <!-- default styles and scripts -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/scripts/bootstrap.min.js}"></script>
+
+    <!-- placeholder for additional links -->
+    <th:block th:replace="${links}" />
+
+    <!-- placeholder for additional scripts -->
+    <th:block th:replace="${scripts}" />
+</head>
