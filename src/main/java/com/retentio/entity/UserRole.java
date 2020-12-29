@@ -2,11 +2,10 @@ package com.retentio.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "reservation")
-public class Reservation implements Serializable {
+@Table(name = "user_role")
+public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,11 +17,8 @@ public class Reservation implements Serializable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "start_date", nullable = false)
-    private Timestamp startDate;
-
-    @Column(name = "end_date", nullable = false)
-    private Timestamp endDate;
+    @Column(name = "role_id", nullable = false)
+    private Integer roleId;
 
     public void setId(Integer id) {
         this.id = id;
@@ -40,29 +36,20 @@ public class Reservation implements Serializable {
         return userId;
     }
 
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
-    }
-
-    public Timestamp getEndDate() {
-        return endDate;
+    public Integer getRoleId() {
+        return roleId;
     }
 
     @Override
     public String toString() {
-        return "Reservation{" +
+        return "UserRole{" +
                 "id=" + id + '\'' +
                 "userId=" + userId + '\'' +
-                "startDate=" + startDate + '\'' +
-                "endDate=" + endDate + '\'' +
+                "roleId=" + roleId + '\'' +
                 '}';
     }
 }

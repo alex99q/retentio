@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "admin")
-public class Admin implements Serializable {
+@Table(name = "role")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,8 +14,8 @@ public class Admin implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    @Column(name = "type", nullable = false)
+    private String type;
 
     public void setId(Integer id) {
         this.id = id;
@@ -25,19 +25,19 @@ public class Admin implements Serializable {
         return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getType() {
+        return type;
     }
 
     @Override
     public String toString() {
-        return "Admin{" +
+        return "Role{" +
                 "id=" + id + '\'' +
-                "userId=" + userId + '\'' +
+                "type=" + type + '\'' +
                 '}';
     }
 }
