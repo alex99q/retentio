@@ -35,12 +35,12 @@ public class UserService {
     }
 
     public User findUserByUserName(String userName) {
-        return userRepository.findByUserName(userName);
+        return userRepository.findByName(userName);
     }
 
     public User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByRole("ADMIN");
+        Role userRole = roleRepository.findByType("ADMIN");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         return userRepository.save(user);
     }
