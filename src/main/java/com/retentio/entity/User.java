@@ -24,6 +24,9 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
@@ -42,6 +45,14 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setEmail(String email) {
@@ -72,6 +83,7 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "id=" + id + '\'' +
+                "username=" + username + '\'' +
                 "name=" + name + '\'' +
                 "email=" + email + '\'' +
                 "password=" + password + '\'' +
