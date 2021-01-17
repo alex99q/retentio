@@ -6,7 +6,6 @@ import com.retentio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +43,7 @@ public class LoginController {
         User userExists = userService.findUserByUsername(user.getUsername());
         if (userExists != null) {
             bindingResult
-                    .rejectValue("userName", "error.user",
+                    .rejectValue("username", "error.user",
                             "There is already a user registered with the user name provided");
         }
         if (bindingResult.hasErrors()) {
@@ -64,7 +63,7 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getUsername() + "/" + user.getName() + " (" + user.getEmail() + ")");
+        modelAndView.addObject("username", "Welcome " + user.getUsername() + "/" + user.getName() + " (" + user.getEmail() + ")");
         modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
         modelAndView.setViewName("admin/home");
         return modelAndView;
