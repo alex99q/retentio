@@ -1,5 +1,6 @@
 package com.retentio.config;
 
+import com.retentio.entity.User;
 import com.retentio.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -36,10 +37,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+                .antMatchers("/admin/**").hasAuthority(User.ADMIN_ROLE).anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/admin/home")
+                .defaultSuccessUrl("/home")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and().logout()

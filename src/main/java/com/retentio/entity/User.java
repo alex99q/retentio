@@ -8,6 +8,9 @@ import java.util.Set;
 @Table(name = "user")
 public class User implements Serializable {
 
+    public static final String USER_ROLE = "USER";
+    public static final String ADMIN_ROLE = "ADMIN";
+
     private static final long serialVersionUID = 1L;
 
     @Id
