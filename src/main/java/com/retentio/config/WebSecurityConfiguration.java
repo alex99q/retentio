@@ -1,7 +1,7 @@
 package com.retentio.config;
 
 import com.retentio.entity.User;
-import com.retentio.service.MyUserDetailsService;
+import com.retentio.service.AuthenticationDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,12 +20,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private AuthenticationDetailsService authenticationDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userDetailsService)
+                .userDetailsService(authenticationDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
 
@@ -37,6 +37,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
+                .antMatchers("/error").permitAll()
                 .antMatchers("/admin/**").hasAuthority(User.ADMIN_ROLE).anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
