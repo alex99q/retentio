@@ -6,9 +6,11 @@
     background-color: var(--main-menu-color);
     font-size: 1.25rem;
     margin-bottom: 40px;
+    opacity: 10%;
 }
 
 #top-navbar > div > ul.navbar-nav > li {
     margin-left: 1.10rem;
     margin-right: 1.10rem;
+    opacity: 100%;
 }

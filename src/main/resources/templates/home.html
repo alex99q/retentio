@@ -2,12 +2,16 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head th:replace="fragments/base :: baseHead(~{::title}, ~{::link}, ~{::script})">
         <title>Home | Retentio</title>
-        <link>
+        <link th:href="@{css/home.css}" rel="stylesheet" />
         <script></script>
     </head>
     <body>
-        <nav th:replace="fragments/navbar :: navbar()"></nav>
-        <h1>Hello, User</h1>
-        <h3>Retentio is a gym reservation website, so you can reserve one of our gyms.</h3>
+        <div class="hero-image">
+            <nav th:replace="fragments/navbar :: navbar()"></nav>
+            <div class="hero-text">
+                <h1 th:text="|Hello, ${fullName}|"></h1>
+                <h3>Welcome to Retentio a gym reservation website, so you can reserve one of our gyms.</h3>
+            </div>
+        </div>
     </body>
 </html>

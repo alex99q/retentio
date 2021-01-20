@@ -17,12 +17,11 @@ public class HomeController {
     private UserService userService;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home(Authentication auth) {
         ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("firstName", user.getFirstName());
-        modelAndView.addObject("lastName", user.getLastName());
+        String fullName = user.getFirstName() + " " + user.getLastName();
+        modelAndView.addObject("fullName", fullName);
         modelAndView.setViewName("/home");
         return modelAndView;
     }
