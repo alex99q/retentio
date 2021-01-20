@@ -21,8 +21,8 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("username", "Welcome " + user.getUsername() + "/" + user.getName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+        modelAndView.addObject("firstName", user.getName());
+        modelAndView.addObject("lastName", user.getLastName());
         modelAndView.setViewName("/home");
         return modelAndView;
     }
