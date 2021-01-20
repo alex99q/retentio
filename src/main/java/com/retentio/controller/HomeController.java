@@ -21,7 +21,7 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByUsername(auth.getName());
-        modelAndView.addObject("firstName", user.getName());
+        modelAndView.addObject("firstName", user.getFirstName());
         modelAndView.addObject("lastName", user.getLastName());
         modelAndView.setViewName("/home");
         return modelAndView;
