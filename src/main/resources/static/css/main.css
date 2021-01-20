@@ -5,6 +5,7 @@
 #top-navbar {
     background-color: var(--main-menu-color);
     font-size: 1.25rem;
+    margin-bottom: 40px;
 }
 
 #top-navbar > div > ul.navbar-nav > li {
