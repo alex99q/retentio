@@ -2,13 +2,13 @@
     --main-menu-color: #ffc107;
 }
 
-#top-navbar {
+#topNavbar {
     background-color: rgba(255, 193, 7, 0.7);
     font-size: 1.25rem;
     margin-bottom: 40px;
 }
 
-#top-navbar > div > ul.navbar-nav > li {
+#topNavbarNav > ul.navbar-nav > li {
     margin-left: 1.10rem;
     margin-right: 1.10rem;
 }
