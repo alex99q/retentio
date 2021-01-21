@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="hero-image">
-            <nav th:replace="fragments/navbar :: navbar()"></nav>
+            <nav th:replace="fragments/navbar :: navbar('home')"></nav>
             <div class="hero-text">
                 <h1 th:text="|Hello, ${fullName}|"></h1>
                 <h3>Welcome to Retentio a gym reservation website, so you can reserve one of our gyms.</h3>
