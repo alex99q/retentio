@@ -3,14 +3,12 @@
 }
 
 #top-navbar {
-    background-color: var(--main-menu-color);
+    background-color: rgba(255, 193, 7, 0.7);
     font-size: 1.25rem;
     margin-bottom: 40px;
-    opacity: 10%;
 }
 
 #top-navbar > div > ul.navbar-nav > li {
     margin-left: 1.10rem;
     margin-right: 1.10rem;
-    opacity: 100%;
 }
