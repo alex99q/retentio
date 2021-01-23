@@ -2,6 +2,7 @@ package com.retentio.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "gym")
@@ -22,6 +23,17 @@ public class Gym implements Serializable {
 
     @Column(name = "capacity", nullable = false)
     private Integer capacity;
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    @OneToMany(mappedBy="gym")
+    private Set<Reservation> reservations;
 
     public void setId(Integer id) {
         this.id = id;

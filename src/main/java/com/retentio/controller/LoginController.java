@@ -32,6 +32,7 @@ public class LoginController {
         User user = new User();
         modelAndView.addObject("user", user);
         modelAndView.setViewName("registration");
+
         return modelAndView;
     }
 
@@ -39,6 +40,7 @@ public class LoginController {
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByUsername(user.getUsername());
+
         if (userExists != null) {
             bindingResult
                     .rejectValue("username", "error.user",
@@ -53,6 +55,7 @@ public class LoginController {
             modelAndView.setViewName("registration");
 
         }
+
         return modelAndView;
     }
 }

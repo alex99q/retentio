@@ -20,8 +20,10 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView();
         User user = userService.findUserByUsername(auth.getName());
         String fullName = user.getFirstName() + " " + user.getLastName();
+
         modelAndView.addObject("fullName", fullName);
         modelAndView.setViewName("/home");
+
         return modelAndView;
     }
 }

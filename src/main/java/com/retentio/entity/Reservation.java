@@ -15,14 +15,19 @@ public class Reservation implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 
     @Column(name = "start_date", nullable = false)
     private Timestamp startDate;
 
     @Column(name = "end_date", nullable = false)
     private Timestamp endDate;
+
+    @ManyToOne
+    @JoinColumn(name="gym_id", nullable=false)
+    private Gym gym;
 
     public void setId(Integer id) {
         this.id = id;
@@ -32,12 +37,12 @@ public class Reservation implements Serializable {
         return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     public void setStartDate(Timestamp startDate) {
@@ -60,7 +65,7 @@ public class Reservation implements Serializable {
     public String toString() {
         return "Reservation{" +
                 "id=" + id + '\'' +
-                "userId=" + userId + '\'' +
+                "userId=" + user + '\'' +
                 "startDate=" + startDate + '\'' +
                 "endDate=" + endDate + '\'' +
                 '}';

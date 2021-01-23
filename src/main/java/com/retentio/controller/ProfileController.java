@@ -21,6 +21,7 @@ public class ProfileController {
     public ModelAndView profile(Authentication authentication) {
         ModelAndView modelAndView = new ModelAndView("/profile");
         User loggedInUser = userRepository.findByUsername(authentication.getName());
+
         modelAndView.addObject("user", loggedInUser);
         modelAndView.addObject("userRole",
                 String.join(", ", loggedInUser
@@ -30,6 +31,7 @@ public class ProfileController {
                         .collect(Collectors.toSet())
                 )
         );
+
         return modelAndView;
     }
 }

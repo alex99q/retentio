@@ -21,6 +21,9 @@ public class User implements Serializable {
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -34,8 +37,8 @@ public class User implements Serializable {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @Column(name = "last_name")
-    private String lastName;
+    @OneToMany(mappedBy="user")
+    private Set<Reservation> reservations;
 
     public void setId(Integer id) {
         this.id = id;
@@ -91,6 +94,14 @@ public class User implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override
