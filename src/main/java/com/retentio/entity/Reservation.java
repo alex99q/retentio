@@ -61,6 +61,14 @@ public class Reservation implements Serializable {
         return endDate;
     }
 
+    public Gym getGym() {
+        return gym;
+    }
+
+    public void setGym(Gym gym) {
+        this.gym = gym;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +

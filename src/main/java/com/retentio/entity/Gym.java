@@ -24,14 +24,6 @@ public class Gym implements Serializable {
     @Column(name = "capacity", nullable = false)
     private Integer capacity;
 
-    public Set<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
     @OneToMany(mappedBy="gym")
     private Set<Reservation> reservations;
 
@@ -65,6 +57,14 @@ public class Gym implements Serializable {
 
     public Integer getCapacity() {
         return capacity;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override
