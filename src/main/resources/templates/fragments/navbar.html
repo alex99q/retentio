@@ -1,4 +1,4 @@
-<nav th:fragment="navbar(page)" xmlns:th="http://www.thymeleaf.org" id="topNavbar" class="navbar navbar-expand-lg navbar-light py-3" >
+<nav th:fragment="navbar(page)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org" id="topNavbar" class="navbar navbar-expand-lg navbar-light py-3" >
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,11 +10,17 @@
             <li class="nav-item" th:classappend="${page == 'profile'} ? 'active' : ''">
                 <a class="nav-link" th:href="@{/profile}">Profile</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Reservate a gym</a>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item" th:classappend="${page == 'manage-gyms'} ? 'active' : ''">
+                <a class="nav-link" href="#">Manage gyms</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">My Reservations</a>
+            <li sec:authorize="hasAuthority('USER')" class="nav-item" th:classappend="${page == 'reserve-gym'} ? 'active' : ''">
+                <a class="nav-link" href="#">Reserve a gym</a>
+            </li>
+            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item" th:classappend="${page == 'manage-reservations'} ? 'active' : ''">
+                <a class="nav-link" th:href="@{/admin/manage-reservations}">Manage Reservations</a>
+            </li>
+            <li sec:authorize="hasAuthority('USER')" class="nav-item" th:classappend="${page == 'my-reservations'} ? 'active' : ''">
+                <a class="nav-link" th:href="@{/user/my-reservations}">My Reservations</a>
             </li>
         </ul>
     </div>
