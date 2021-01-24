@@ -1,7 +1,7 @@
 $(document).ready(function(){
   $('#submitDeletionButton').click(function() {
     $.ajax({
-      type: 'POST',
+      type: 'DELETE',
       data: function (dataId) {
         dataId = $(this).attr('data-id');
       },
