@@ -2,8 +2,8 @@ $(document).ready(function(){
   $('#submitDeletionButton').click(function() {
     $.ajax({
       type: 'DELETE',
-      data: function (dataId) {
-        dataId = $(this).attr('data-id');
+      data : {
+        "gymId" : $(this).attr('data-id')
       },
       url: '/admin/deleteGym',
       cache:false

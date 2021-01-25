@@ -26,8 +26,9 @@ public class GymController {
     }
 
     @RequestMapping(value = "/admin/deleteGym", method = RequestMethod.DELETE)
-    public void ajaxDeleteGym(@PathVariable("dataId") String gymId) {
-        gymService.delete(Integer.parseInt(gymId));
+    @ResponseBody
+    public void ajaxDeleteGym(@RequestParam() Integer gymId) {
+        gymService.delete(gymId.intValue());
     }
 
 }
