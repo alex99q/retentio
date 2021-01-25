@@ -3,7 +3,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="topNavbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav w-100">
             <li class="nav-item" th:classappend="${page == 'home'} ? 'active' : ''">
                 <a class="nav-link" th:href="@{/home}">Home <span class="sr-only">(current)</span></a>
             </li>
@@ -11,16 +11,19 @@
                 <a class="nav-link" th:href="@{/profile}">Profile</a>
             </li>
             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item" th:classappend="${page == 'manage-gyms'} ? 'active' : ''">
-                <a class="nav-link" href="#">Manage gyms</a>
+                <a class="nav-link" th:href="@{/admin/manage-gyms}">Manage gyms</a>
             </li>
             <li sec:authorize="hasAuthority('USER')" class="nav-item" th:classappend="${page == 'reserve-gym'} ? 'active' : ''">
-                <a class="nav-link" href="#">Reserve a gym</a>
+                <a class="nav-link" th:href="@{/user/reserve-gym}">Reserve a gym</a>
             </li>
             <li sec:authorize="hasAuthority('ADMIN')" class="nav-item" th:classappend="${page == 'manage-reservations'} ? 'active' : ''">
                 <a class="nav-link" th:href="@{/admin/manage-reservations}">Manage Reservations</a>
             </li>
             <li sec:authorize="hasAuthority('USER')" class="nav-item" th:classappend="${page == 'my-reservations'} ? 'active' : ''">
                 <a class="nav-link" th:href="@{/user/my-reservations}">My Reservations</a>
+            </li>
+            <li class="nav-item ml-auto" th:classappend="${page == 'my-reservations'} ? 'active' : ''">
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
             </li>
         </ul>
     </div>
