@@ -1,14 +1,12 @@
 package com.retentio.controller;
 
+import com.retentio.entity.Gym;
 import com.retentio.repository.GymRepository;
 import com.retentio.service.GymService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class GymController {
@@ -29,6 +27,16 @@ public class GymController {
     @ResponseBody
     public void ajaxDeleteGym(@RequestParam() Integer gymId) {
         gymService.delete(gymId.intValue());
+    }
+
+    @RequestMapping(value = "/admin/createGym", method = RequestMethod.POST)
+    public void createGym(@RequestParam() String gymName, @RequestParam() String gymAddress,
+                              @RequestParam() Integer gymCapacity) {
+        Gym gym = new Gym();
+        gym.setName(gymName);
+        gym.setAddress(gymAddress);
+        gym.setCapacity(gymCapacity);
+        gymService.save(gym);
     }
 
 }
