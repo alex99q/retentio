@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -38,11 +39,14 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public List<User> findUsersByRole(Role role) {
+        return userRepository.findByRoles_type(role.getType());
+    }
+
     public User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByType(User.USER_ROLE);
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         return userRepository.save(user);
     }
-
 }
