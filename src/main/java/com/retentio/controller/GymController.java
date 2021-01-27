@@ -30,13 +30,14 @@ public class GymController {
     }
 
     @RequestMapping(value = "/admin/createGym", method = RequestMethod.POST)
-    public void createGym(@RequestParam() String gymName, @RequestParam() String gymAddress,
-                              @RequestParam() Integer gymCapacity) {
+    public String createGym(@RequestParam() String name, @RequestParam() String address,
+                              @RequestParam() Integer capacity) {
         Gym gym = new Gym();
-        gym.setName(gymName);
-        gym.setAddress(gymAddress);
-        gym.setCapacity(gymCapacity);
+        gym.setName(name);
+        gym.setAddress(address);
+        gym.setCapacity(capacity);
         gymService.save(gym);
+        return "redirect:/admin/manage-gyms";
     }
 
 }

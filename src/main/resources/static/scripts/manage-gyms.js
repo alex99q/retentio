@@ -6,6 +6,9 @@ $(document).ready(function(){
         "gymId" : $(this).attr('data-id')
       },
       url: '/admin/deleteGym',
+      success: function() {
+        location.reload();
+      },
       cache:false
     });
   });
@@ -13,5 +16,8 @@ $(document).ready(function(){
   $("[id^=deleteButton_]").click(function() {
     transferId($(this));
   });
-
 });
+
+function submitAddGym() {
+  document.getElementById("addGymForm").submit();
+}
