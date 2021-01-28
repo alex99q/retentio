@@ -12,3 +12,7 @@
     margin-left: 1.10rem;
     margin-right: 1.10rem;
 }
+
+.ui-timepicker-container.ui-timepicker-standard {
+    z-index: 2000 !important;
+}

@@ -23,13 +23,13 @@ public class GymController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin/deleteGym", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/delete-gym", method = RequestMethod.DELETE)
     @ResponseBody
     public void ajaxDeleteGym(@RequestParam() Integer gymId) {
         gymService.delete(gymId.intValue());
     }
 
-    @RequestMapping(value = "/admin/createGym", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/create-gym", method = RequestMethod.POST)
     public String createGym(@RequestParam() String name, @RequestParam() String address,
                               @RequestParam() Integer capacity) {
         Gym gym = new Gym();

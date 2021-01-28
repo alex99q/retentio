@@ -58,7 +58,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <form th:action="@{/admin/createGym}" method="POST" id="addGymForm">
+                            <form th:action="@{/admin/create-gym}" method="POST" id="addGymForm">
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-4 col-form-label">Gym name</label>
                                     <div class="col-sm-5">
@@ -82,7 +82,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-danger" onclick="submitAddGym()">Yes</button>
+                        <button id="addGymButton" type="button" class="btn btn-primary">Yes</button>
                     </div>
                 </div>
             </div>
