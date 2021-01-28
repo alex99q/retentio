@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 @Controller
 public class GymController {
     @Autowired
@@ -39,5 +41,31 @@ public class GymController {
         gymService.save(gym);
         return "redirect:/admin/manage-gyms";
     }
+
+    @RequestMapping(value="/admin/view-gym/{id}", method = RequestMethod.GET)
+    public ModelAndView viewGym(@PathVariable Integer id) {
+        ModelAndView modelAndView = new ModelAndView("/partials/edit-form");
+        Gym gym = gymService.get(id);
+        modelAndView.addObject(gym);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin/save-gym", method = RequestMethod.POST)
+    public String saveGym(@RequestParam() String name, @RequestParam() String address,
+                            @RequestParam() Integer capacity) {
+        Gym gym = new Gym();
+        gym.setName(name);
+        gym.setAddress(address);
+        gym.setCapacity(capacity);
+        gymService.save(gym);
+        return "redirect:/admin/manage-gyms";
+    }
+
+    @PostMapping("/admin/save-gym/{id}")
+    public String updateUser(@PathVariable("id") long id, @Valid Gym gym) {
+        gymService.save(gym);
+        return "redirect:/index";
+    }
+
 
 }

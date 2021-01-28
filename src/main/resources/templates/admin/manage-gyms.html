@@ -21,7 +21,7 @@
                     <td class="align-middle" th:text="|${gym.name} - ${gym.address}|"></td>
                     <td class="align-middle" th:text="${gym.capacity}"></td>
                     <td>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editGymModal"><i class="fas fa-edit"></i></button>
+                        <button type="button" th:id="|editButton_${gym.id}|" class="btn btn-success" data-toggle="modal" th:attr="data-id=${gym.id}" data-target="#editGymModal"><i class="fas fa-edit"></i></button>
                         <button type="button" th:id="|deleteButton_${gym.id}|" class="btn btn-danger" data-toggle="modal" th:attr="data-id=${gym.id}" data-target="#deleteGymModal"><i class="far fa-trash-alt"></i></button>
                     </td>
                 </tr>
@@ -60,21 +60,21 @@
                         <div class="container">
                             <form th:action="@{/admin/create-gym}" method="POST" id="addGymForm">
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-4 col-form-label">Gym name</label>
+                                    <label for="createGymName" class="col-sm-4 col-form-label">Gym name</label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control" id="name" name="name" />
+                                        <input type="text" class="form-control" id="createGymName" name="name" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="address" class="col-sm-4 col-form-label">Address</label>
+                                    <label for="createGymAddress" class="col-sm-4 col-form-label">Address</label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control" id="address" name="address"/>
+                                        <input type="text" class="form-control" id="createGymAddress" name="address"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="capacity" class="col-sm-4 col-form-label">Capacity</label>
+                                    <label for="createGymCapacity" class="col-sm-4 col-form-label">Capacity</label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control" id="capacity" name="capacity"/>
+                                        <input type="text" class="form-control" id="createGymCapacity" name="capacity"/>
                                     </div>
                                 </div>
                             </form>
@@ -83,6 +83,25 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                         <button id="addGymButton" type="button" class="btn btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editGymModal" tabindex="-1" role="dialog" aria-labelledby="editGymModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="editGymModalLabel">Edit gym</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="editGymContainer" class="container">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button id="editGymButton" type="button" class="btn btn-primary transfer-id">Yes</button>
                     </div>
                 </div>
             </div>
