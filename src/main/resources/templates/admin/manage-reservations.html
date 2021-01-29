@@ -9,6 +9,9 @@
         <nav th:replace="fragments/navbar :: navbar('manage-reservations')"></nav>
         <div class="container">
             <h2>All available reservations</h2>
+            <div th:if="${errorMessages}" class="alert alert-danger" role="alert">
+                <label th:each="message : ${errorMessages}" th:text="${message}">Input is incorrect</label>
+            </div>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -25,10 +28,10 @@
                     <td class="align-middle" th:text="${reservation.id}"></td>
                     <td class="align-middle" th:text="${reservation.user.username}"></td>
                     <td class="align-middle" th:text="${#dates.format(reservation.startDate, 'dd-MM-yyyy')}"></td>
-                    <td class="align-middle" th:text="|${#dates.format(reservation.startDate, 'hh:mm')} - ${#dates.format(reservation.endDate, 'hh:mm')}|"></td>
+                    <td class="align-middle" th:text="|${#dates.format(reservation.startDate, 'HH:mm')} - ${#dates.format(reservation.endDate, 'HH:mm')}|"></td>
                     <td class="align-middle" th:text="|${reservation.gym.name} - ${reservation.gym.address}|"></td>
                     <td>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteReservationModal"><i class="far fa-trash-alt"></i></button>
+                        <button th:id="|deleteButton_${reservation.id}|" th:attr="data-id=${reservation.id}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteReservationModal"><i class="far fa-trash-alt"></i></button>
                     </td>
                 </tr>
                 </tbody>
@@ -49,7 +52,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-danger">Yes</button>
+                        <button id="submitDeletionButton" type="button" class="btn btn-danger transfer-id">Yes</button>
                     </div>
                 </div>
             </div>
@@ -65,7 +68,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <form th:action="@{/admin/create-reservation}" method="POST" id="addReservationForm">
+                            <form th:object="${addReservationForm}" th:action="@{/admin/create-reservation}" method="POST" id="addReservationForm">
                                 <div class="form-group row">
                                     <label for="username" class="col-sm-4 col-form-label">Username</label>
                                     <div class="col-sm-7">
