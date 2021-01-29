@@ -2,6 +2,7 @@ package com.retentio.controller;
 
 import com.retentio.entity.Reservation;
 import com.retentio.entity.User;
+import com.retentio.repository.ReservationRepository;
 import com.retentio.service.GymService;
 import com.retentio.service.ReservationService;
 import com.retentio.service.RoleService;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -38,6 +41,9 @@ public class ReservationController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @RequestMapping(value = {"/admin/manage-reservations"}, method = RequestMethod.GET)
     public ModelAndView manageReservations() {
@@ -118,7 +124,12 @@ public class ReservationController {
         map.put("18:00", 0);
         map.put("18:30", 0);
         map.put("19:00", 0);
-        map.put("19:30", 0);
+
+        Date today = new Date();
+        today.setHours(0);
+        System.out.println(reservationRepository.findCountByGymAndDatePerHalfHour(2, "2021-01-29 00:00:00"));
+        Map<String, Integer> a = reservationRepository.findCountByGymAndDatePerHalfHour(2);
+
 
         ModelAndView modelAndView = new ModelAndView("/user/reserve-gym");
         modelAndView.addObject("gymList", gymService.listAll());
