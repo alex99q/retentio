@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/base :: baseHead(~{::title}, ~{::link}, ~{::script})">
-        <title>Profile | My Reservations</title>
+        <title>Manage gyms | Retentio</title>
         <link>
-        <script></script>
+        <script type="text/javascript" th:src="@{/scripts/manage-gyms.js}"></script>
     </head>
     <body>
-        <nav th:replace="fragments/navbar :: navbar('my-reservations')"></nav>
-        My reservations
+        <nav th:replace="fragments/navbar :: navbar('manage-gyms')"></nav>
+        <div class="container">
+        </div>
     </body>
 </html>
