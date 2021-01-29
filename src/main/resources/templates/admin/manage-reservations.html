@@ -3,7 +3,7 @@
     <head th:replace="fragments/base :: baseHead(~{::title}, ~{::link}, ~{::script})">
         <title>Profile | Manage Reservations</title>
         <link>
-        <script></script>
+        <script type="text/javascript" th:src="@{/scripts/manage-reservations.js}"></script>
     </head>
     <body>
         <nav th:replace="fragments/navbar :: navbar('manage-reservations')"></nav>
@@ -65,26 +65,41 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <form>
+                            <form th:action="@{/admin/create-reservation}" method="POST" id="addReservationForm">
                                 <div class="form-group row">
                                     <label for="username" class="col-sm-4 col-form-label">Username</label>
-                                    <div class="col-sm-5">
-                                        <select id="username" class="form-control" th:field="*{userList}">
+                                    <div class="col-sm-7">
+                                        <select id="username" name="userId" class="form-control">
                                             <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.username}">
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="date" class="col-sm-4 col-form-label">Reservation date</label>
-                                    <div class="col-sm-5">
-                                        <input type="text" id="date" class="form-control datepicker" name="date" value='12/01/2021' data-date-format="dd/mm/yyyy" />
+                                    <label for="gym" class="col-sm-4 col-form-label">Gym</label>
+                                    <div class="col-sm-7">
+                                        <select id="gym" name="gymId" class="form-control">
+                                            <option th:each="gym : ${gymList}" th:value="${gym.id}" th:text="|${gym.name} - ${gym.address}|">
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="startTime" class="col-sm-4 col-form-label">Reservation date</label>
-                                    <div class="col-sm-5">
-                                        <input type="time" id="startTime" name="startTime" step="18000" value="10:00" min="08:00" max="22:00" required>
+                                    <label for="date" class="col-sm-4 col-form-label">Reservation date</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="date" class="form-control datepicker text-center" name="date" value='12/01/2021' data-date-format="dd/mm/yyyy" readonly/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="startTime" class="col-sm-4 col-form-label">From</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control timepicker text-center" type="text" id="startTime" name="startTime" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="endTime" class="col-sm-4 col-form-label">To</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control timepicker text-center" type="text" id="endTime" name="endTime" readonly>
                                     </div>
                                 </div>
                             </form>
@@ -92,7 +107,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-danger">Yes</button>
+                        <button id="addReservationButton" type="button" class="btn btn-primary">Yes</button>
                     </div>
                 </div>
             </div>
