@@ -61,11 +61,10 @@ public class GymController {
         return "redirect:/admin/manage-gyms";
     }
 
-    @PostMapping("/admin/save-gym/{id}")
-    public String updateUser(@PathVariable("id") long id, @Valid Gym gym) {
+    @PostMapping("/admin/edit-gym/{id}")
+    public String updateUser(@PathVariable("id") Integer id, @Valid Gym gym) {
         gymService.save(gym);
-        return "redirect:/index";
+        return "redirect:/admin/manage-gyms";
     }
-
 
 }
