@@ -8,8 +8,8 @@
     <body>
         <nav th:replace="fragments/navbar :: navbar('manage-reservations')"></nav>
         <div class="container">
-            <h2>All available reservations</h2>
             <div th:replace="fragments/error-messages :: showErrors(${errorMessages})"></div>
+            <h2>All available reservations</h2>
             <table class="table table-bordered">
                 <thead>
                 <tr>

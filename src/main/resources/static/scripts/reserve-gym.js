@@ -17,8 +17,5 @@ $(document).ready(function(){
     alert('nice');
   });
 
-  $("#editGymButton").click(function() {
-      $("#editGymForm").submit();
-  });
 
 });

@@ -1,5 +1,6 @@
 package com.retentio.controller;
 
+import com.retentio.entity.Gym;
 import com.retentio.entity.Reservation;
 import com.retentio.entity.User;
 import com.retentio.repository.ReservationRepository;
@@ -91,7 +92,7 @@ public class ReservationController {
     }
 
     @RequestMapping(value = "/admin/create-reservation", method = RequestMethod.POST)
-    public String createReservation(@RequestParam Map<String,String> allParams, RedirectAttributes redirectAttributes) {
+    public String adminCreateReservation(@RequestParam Map<String,String> allParams, RedirectAttributes redirectAttributes) {
         Date now = new Date();
         now.setHours(0);
         now.setMinutes(0);
@@ -133,6 +134,9 @@ public class ReservationController {
 
     @RequestMapping(value = {"/user/reserve-gym"}, method = RequestMethod.GET)
     public ModelAndView reserveGym() {
+        Date now = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String stringDate = dateFormat.format(now);
         Date startTime = null;
         Date endTime = null;
         try {
@@ -154,8 +158,54 @@ public class ReservationController {
         ModelAndView modelAndView = new ModelAndView("/user/reserve-gym");
         modelAndView.addObject("gymList", gymService.listAll());
         modelAndView.addObject("selectedGym", gymService.get(2));
-        LocalDate currentDate = LocalDate.now();
-        modelAndView.addObject("selectedDate", currentDate);
+        modelAndView.addObject("currentDate", stringDate);
         return modelAndView;
     }
+
+    @RequestMapping(value = {"/user/create-reservation"}, method = RequestMethod.POST)
+    public String userCreateReservation(@RequestParam Map<String,String> allParams,
+                                              RedirectAttributes redirectAttributes, Authentication authentication) {
+        Date now = new Date();
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+        List<String> errorMessages = new ArrayList<>();
+        Reservation reservation = new Reservation();
+        Gym gym = gymService.get(Integer.parseInt(allParams.get("gymId")));
+        User user = userService.findUserByUsername(authentication.getName());
+        Date startDate = null;
+        Date endDate = null;
+
+        try {
+            startDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(allParams.get("date") + " " + allParams.get("startTime"));
+            endDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(allParams.get("date") + " " + allParams.get("endTime"));
+            reservation.setGym(gym);
+            reservation.setUser(user);
+            reservation.setStartDate(new Timestamp(startDate.getTime()));
+            reservation.setEndDate(new Timestamp(endDate.getTime()));
+
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+
+        if (startDate != null && endDate != null && startDate.getTime() >= endDate.getTime()) {
+            errorMessages.add("End time can not be before start time!");
+        }
+
+        if (startDate.getTime() < now.getTime()) {
+            errorMessages.add("Date can't be before today!");
+        }
+
+        if (!errorMessages.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessages", errorMessages);
+            return "redirect:/user/reserve-gym";
+        }
+
+        reservationService.save(reservation);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Reservation successful!");
+
+        return "redirect:/user/reserve-gym";
+    }
+
 }

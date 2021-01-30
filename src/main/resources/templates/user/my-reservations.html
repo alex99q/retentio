@@ -8,10 +8,8 @@
     <body>
         <nav th:replace="fragments/navbar :: navbar('my-reservations')"></nav>
         <div class="container">
+            <div th:replace="fragments/error-messages :: showErrors(${errorMessages})"></div>
             <h2>All available reservations</h2>
-            <div th:if="${errorMessages}" class="alert alert-danger" role="alert">
-                <label th:each="message : ${errorMessages}" th:text="${message}">Input is incorrect</label>
-            </div>
             <table class="table table-bordered">
                 <thead>
                 <tr>
