@@ -23,13 +23,12 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class ReservationController {
@@ -105,8 +104,8 @@ public class ReservationController {
         Date startDate = null;
         Date endDate = null;
         try {
-            startDate = new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(allParams.get("date") + " " + allParams.get("startTime"));
-            endDate = new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(allParams.get("date") + " " + allParams.get("endTime"));
+            startDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(allParams.get("date") + " " + allParams.get("startTime"));
+            endDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(allParams.get("date") + " " + allParams.get("endTime"));
         } catch (ParseException e) {
             errorMessages.add("Wrong date format!");
         }
@@ -134,32 +133,23 @@ public class ReservationController {
 
     @RequestMapping(value = {"/user/reserve-gym"}, method = RequestMethod.GET)
     public ModelAndView reserveGym() {
-        Map <String, Integer> map = new HashMap<String, Integer>();
-        map.put("10:00", 0);
-        map.put("10:30", 0);
-        map.put("11:00", 0);
-        map.put("11:30", 0);
-        map.put("12:00", 0);
-        map.put("12:30", 0);
-        map.put("13:00", 0);
-        map.put("13:30", 0);
-        map.put("14:00", 0);
-        map.put("14:30", 0);
-        map.put("15:00", 0);
-        map.put("15:30", 0);
-        map.put("16:00", 0);
-        map.put("16:30", 0);
-        map.put("17:00", 0);
-        map.put("17:30", 0);
-        map.put("18:00", 0);
-        map.put("18:30", 0);
-        map.put("19:00", 0);
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse("2021-01-30 10:00");
+            endTime= new SimpleDateFormat("yyyy-MM-dd HH:mm").parse("2021-01-30 19:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        Date today = new Date();
-        today.setHours(0);
-        //System.out.println(reservationRepository.findCountByGymAndDatePerHalfHour(2, "2021-01-29 00:00:00"));
-        Map<String, Integer> a = reservationRepository.findCountByGymAndDatePerHalfHour(2);
+        Map<Date, Boolean> reservationCountPerHalfHour = gymService.getAvailabilityPerHalfHour(gymService.get(2), startTime);
 
+        for (long currentTime = startTime.getTime(); currentTime <= endTime.getTime(); currentTime += TimeUnit.MINUTES.toMillis(30)) {
+            Date currentDate = new Date(currentTime);
+            if (!reservationCountPerHalfHour.containsKey(currentDate)) {
+                reservationCountPerHalfHour.put(currentDate, true);
+            }
+        }
 
         ModelAndView modelAndView = new ModelAndView("/user/reserve-gym");
         modelAndView.addObject("gymList", gymService.listAll());
@@ -168,7 +158,4 @@ public class ReservationController {
         modelAndView.addObject("selectedDate", currentDate);
         return modelAndView;
     }
-
-
-
 }
