@@ -8,6 +8,8 @@ import com.retentio.service.ReservationService;
 import com.retentio.service.RoleService;
 import com.retentio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,30 +50,53 @@ public class ReservationController {
 
     @RequestMapping(value = {"/admin/manage-reservations"}, method = RequestMethod.GET)
     public ModelAndView manageReservations() {
+        Date now = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String stringDate = dateFormat.format(now);
+
         ModelAndView modelAndView = new ModelAndView("/admin/manage-reservations");
         modelAndView.addObject("userList", userService.findUsersByRole(roleService.findRoleByType(User.USER_ROLE)));
         modelAndView.addObject("gymList", gymService.listAll());
         modelAndView.addObject("reservations", reservationService.listAll());
+        modelAndView.addObject("currentDate", stringDate);
 
         return modelAndView;
     }
 
     @RequestMapping(value = {"/user/my-reservations"}, method = RequestMethod.GET)
-    public ModelAndView myReservations() {
+    public ModelAndView myReservations(Authentication authentication) {
         ModelAndView modelAndView = new ModelAndView("/user/my-reservations");
-        modelAndView.addObject("reservations", reservationService.listAll());
 
+        modelAndView.addObject("reservations", reservationRepository.findByUser_username(authentication.getName()));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/user/delete-reservation", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String ajaxUserDeleteReservation(@RequestParam() Integer reservationId, Authentication authentication,
+                                          RedirectAttributes redirectAttributes, ModelAndView modelAndView) {
+        Reservation reservation = reservationService.get(reservationId);
+        User user = userService.findUserByUsername(authentication.getName());
+        if (user.equals(reservation.getUser())) {
+            reservationService.delete(reservationId);
+        } else {
+            return "Mislehte che shte go schupite, nqma da stane!";
+        }
+        return "";
     }
 
     @RequestMapping(value = "/admin/delete-reservation", method = RequestMethod.DELETE)
     @ResponseBody
-    public void ajaxDeleteReservation(@RequestParam() Integer reservationId) {
+    public void ajaxAdminDeleteReservation(@RequestParam() Integer reservationId) {
         reservationService.delete(reservationId);
     }
 
     @RequestMapping(value = "/admin/create-reservation", method = RequestMethod.POST)
     public String createReservation(@RequestParam Map<String,String> allParams, RedirectAttributes redirectAttributes) {
+        Date now = new Date();
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
         Reservation reservation = new Reservation();
         reservation.setUser(userService.get(Integer.parseInt(allParams.get("userId"))));
         reservation.setGym(gymService.get(Integer.parseInt(allParams.get("gymId"))));
@@ -85,8 +111,12 @@ public class ReservationController {
             errorMessages.add("Wrong date format!");
         }
 
-        if (startDate != null && endDate != null && startDate.getTime() > endDate.getTime()) {
+        if (startDate != null && endDate != null && startDate.getTime() >= endDate.getTime()) {
             errorMessages.add("End time can not be before start time!");
+        }
+
+        if (startDate.getTime() < now.getTime()) {
+            errorMessages.add("Date can't be before today!");
         }
 
         if (!errorMessages.isEmpty()) {
@@ -127,7 +157,7 @@ public class ReservationController {
 
         Date today = new Date();
         today.setHours(0);
-        System.out.println(reservationRepository.findCountByGymAndDatePerHalfHour(2, "2021-01-29 00:00:00"));
+        //System.out.println(reservationRepository.findCountByGymAndDatePerHalfHour(2, "2021-01-29 00:00:00"));
         Map<String, Integer> a = reservationRepository.findCountByGymAndDatePerHalfHour(2);
 
 

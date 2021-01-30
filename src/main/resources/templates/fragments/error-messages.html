@@ -1,0 +1,6 @@
+<div th:fragment="showErrors(errorMessages)" th:if="${errorMessages}" class="alert alert-danger" role="alert" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div th:each="message : ${errorMessages}">
+        <label th:text="${message}">Input is incorrect</label>
+        </br>
+    </div>
+</div>

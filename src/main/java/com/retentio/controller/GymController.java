@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class GymController {
@@ -19,9 +23,10 @@ public class GymController {
     private GymService gymService;
 
     @RequestMapping(value = "/admin/manage-gyms", method = RequestMethod.GET)
-    public ModelAndView manageGyms() {
+    public ModelAndView manageGyms(RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("/admin/manage-gyms");
         modelAndView.addObject("gyms", gymRepository.findAll());
+
         return modelAndView;
     }
 
@@ -32,13 +37,23 @@ public class GymController {
     }
 
     @RequestMapping(value = "/admin/create-gym", method = RequestMethod.POST)
-    public String createGym(@RequestParam() String name, @RequestParam() String address,
-                              @RequestParam() Integer capacity) {
-        Gym gym = new Gym();
-        gym.setName(name);
-        gym.setAddress(address);
-        gym.setCapacity(capacity);
-        gymService.save(gym);
+    public String createGym(RedirectAttributes redirectAttributes, @RequestParam() String name, @RequestParam() String address,
+                              @RequestParam() String capacity) {
+        List<String> errorMessages = new ArrayList<>();
+        try {
+            Gym gym = new Gym();
+            gym.setName(name);
+            gym.setAddress(address);
+            gym.setCapacity(Integer.parseInt(capacity));
+            gymService.save(gym);
+        } catch (NumberFormatException nfe) {
+            errorMessages.add("Capacity needs to be a number");
+        }
+
+        if (!errorMessages.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessages", errorMessages);
+        }
+
         return "redirect:/admin/manage-gyms";
     }
 
@@ -50,20 +65,24 @@ public class GymController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/admin/save-gym", method = RequestMethod.POST)
-    public String saveGym(@RequestParam() String name, @RequestParam() String address,
-                            @RequestParam() Integer capacity) {
-        Gym gym = new Gym();
-        gym.setName(name);
-        gym.setAddress(address);
-        gym.setCapacity(capacity);
-        gymService.save(gym);
-        return "redirect:/admin/manage-gyms";
-    }
-
     @PostMapping("/admin/edit-gym/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @Valid Gym gym) {
-        gymService.save(gym);
+    public String updateUser(RedirectAttributes redirectAttributes, @PathVariable("id") Integer id,
+                             @RequestParam() String name, @RequestParam() String address, @RequestParam() String capacity) {
+        List<String> errorMessages = new ArrayList<>();
+        try {
+            Gym gym = gymService.get(id);
+            gym.setName(name);
+            gym.setAddress(address);
+            gym.setCapacity(Integer.parseInt(capacity));
+            gymService.save(gym);
+        } catch (NumberFormatException nfe) {
+            errorMessages.add("Capacity needs to be a number");
+        }
+
+        if (!errorMessages.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessages", errorMessages);
+        }
+
         return "redirect:/admin/manage-gyms";
     }
 
