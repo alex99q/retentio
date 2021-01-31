@@ -153,12 +153,19 @@ public class ReservationController {
         }
 
         TreeMap<Date, Boolean> reservationCountPerHalfHour = (TreeMap<Date, Boolean>) gymService
-                .getAvailabilityPerHalfHour(gymService.get(gymId), userService.findUserByUsername(authentication.getName()), startTime);
+                .getAvailabilityPerHalfHour(gymService.get(gymId), startTime);
+
+        TreeMap<Date, Boolean> userUnAvailabilityPerHalfHour = (TreeMap<Date, Boolean>) gymService
+                .getUserAvailabilityPerHalfHour(gymService.get(gymId), userService.findUserByUsername(authentication.getName()), startTime);
 
         for (long currentTime = startTime.getTime(); currentTime <= endTime.getTime(); currentTime += TimeUnit.MINUTES.toMillis(30)) {
             Date currentDate = new Date(currentTime);
             if (!reservationCountPerHalfHour.containsKey(currentDate)) {
                 reservationCountPerHalfHour.put(currentDate, true);
+            }
+
+            if (userUnAvailabilityPerHalfHour.containsKey(currentDate)) {
+                reservationCountPerHalfHour.put(currentDate, false);
             }
         }
 
