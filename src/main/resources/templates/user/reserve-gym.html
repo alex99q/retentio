@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="fragments/base :: baseHead(~{::title}, ~{::link}, ~{::script})">
         <title>Reserve a gym | Retentio</title>
-        <link>
+        <link rel="stylesheet" th:href="@{/css/my-reservations.css}">
         <script type="text/javascript" th:src="@{/scripts/reserve-gym.js}"></script>
     </head>
     <body>
@@ -14,36 +14,8 @@
                 </br>
             </div>
             <h2>Reserve a gym</h2>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
-
+            <div id="reservationTableContainer" class="container">
+            </div>
             <form th:action="@{/user/create-reservation}" method="POST" id="createReservation">
                 <div class="form-group">
                     <label for="gym" class="col-sm-9 col-form-label">Choose gym</label>

@@ -1,11 +1,14 @@
 package com.retentio.service;
 
+import com.retentio.entity.Gym;
 import com.retentio.entity.Reservation;
+import com.retentio.entity.User;
 import com.retentio.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,4 +33,7 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
+    public boolean hasUserReservedInTimeRange(User user, Gym gym, Date startDate, Date endDate) {
+        return !reservationRepository.findByUserAndGymInDateRange(user.getId(), gym.getId(), startDate, endDate).isEmpty();
+    }
 }

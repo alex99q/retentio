@@ -1,0 +1,12 @@
+<table xmlns:th="http://www.thymeleaf.org" id="reservationTable" class="table table-bordered">
+    <thead>
+    <tr>
+        <th class="text-center" th:each="reservationHour : ${reservationHours}" scope="col" th:text="${#dates.format(reservationHour, 'HH:mm')}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="text-center" th:each="currentAvailability : ${reservationAvailability}" th:classappend="${currentAvailability} ? bg-success : bg-danger"></td>
+    </tr>
+    </tbody>
+</table>

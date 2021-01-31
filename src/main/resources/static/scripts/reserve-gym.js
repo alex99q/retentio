@@ -1,21 +1,22 @@
-$(document).ready(function(){
-  $('#submitDeletionButton').click(function() {
-    $.ajax({
-      type: 'DELETE',
-      data : {
-        "gymId" : $(this).attr('data-id')
-      },
-      url: '/admin/delete-gym',
-      success: function() {
-        location.reload();
-      },
-      cache:false
-    });
+function reservationTableAjax() {
+  $.ajax({
+    type: 'GET',
+    url: '/user/ajax-reservation-table/' +  $('#gym').val() + '/' + $('#date').val().replace(/\//g, "-"),
+    success: function(response) {
+      $('#reservationTableContainer').html(response);
+    },
+    cache:false
   });
+}
+
+$(document).ready(function(){
+  reservationTableAjax();
 
   $("#gym").change(function() {
-    alert('nice');
+    reservationTableAjax();
   });
 
-
+  $("#date[type='text']").change( function() {
+    reservationTableAjax();
+  });
 });

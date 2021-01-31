@@ -14,6 +14,7 @@ import java.util.Date;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer>, JpaSpecificationExecutor<Reservation> {
 
+    // Finds the count of reservations for the given datetime and gym, also returns if the user already has reservation for the given datetime and gym
     @Query(
             value = "with recursive cte as ( " +
                     "      select start_date, end_date " +
@@ -24,12 +25,19 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
                     "      from cte " +
                     "      where start_date < end_date - interval 30 minute " +
                     "     ) " +
-                    "select start_date as date, count(*) as count " +
+                    "select start_date as date, count(*), IF (EXISTS(SELECT * from reservation " +
+                    "      where gym_id = :gymId and start_date > :date and end_date < DATE_ADD(:date, INTERVAL 1 DAY) and user_id = :userId), true, false) as has_user_reserved " +
                     "from cte " +
                     "group by start_date " +
                     "order by start_date;",
             nativeQuery = true)
-    List<ReservationCountPerHalfHour> findCountByGymAndDatePerHalfHour(@Param("gymId")int gymId, @Param("date") Date date);
+    List<ReservationCountPerHalfHour> findCountAndUserAvailabilityByGymAndDatePerHalfHour(@Param("gymId")int gymId, @Param("userId")int userId, @Param("date") Date date);
+
+    @Query(value = "SELECT count(*) FROM reservation WHERE (start_date < :searchEndDate) AND (end_date > :searchStartDate) AND gym_id = :gymId", nativeQuery = true)
+    int findCountByGymInDateRange(@Param("gymId")int gymId, @Param("searchStartDate") Date startDate, @Param("searchEndDate") Date endDate);
+
+    @Query(value = "SELECT * FROM reservation WHERE (start_date < :searchEndDate) AND (end_date > :searchStartDate) AND gym_id = :gymId AND user_id = :userId", nativeQuery = true)
+    List<Reservation> findByUserAndGymInDateRange(@Param("userId")int userId, @Param("gymId")int gymId, @Param("searchStartDate") Date startDate, @Param("searchEndDate") Date endDate);
 
     List<Reservation> findByUser_username(String username);
 }
