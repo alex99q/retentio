@@ -215,8 +215,6 @@ public class ReservationController {
             errorMessages.add("You cant reserve the current time range!");
         }
 
-        System.out.println(reservationService.hasUserReservedInTimeRange(user, gym, startDate, endDate));
-        List<Reservation> result = reservationRepository.findByUserAndGymInDateRange(user.getId(), gym.getId(), startDate, endDate);
         if (reservationService.hasUserReservedInTimeRange(user, gym, startDate, endDate)) {
             errorMessages.add("You already have a reservation in this time range!");
         }
